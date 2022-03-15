@@ -24,13 +24,13 @@ def get_similar_words(word, words):
     # find word in words by removing one character at a time
     for i in range(len(word)):
         pattern = '\n'+word[:i]+'[a-z]?'+word[i+1:]+'\n'
-        matches = re.findall(pattern, words)
+        matches = re.findall(pattern, words, re.IGNORECASE)
         if len(matches) > 0:
             found_words.extend(matches)
         
     for i in range(len(word) + 1):
-        pattern = '\n'+word[:i]+'[a-z]?'+word[i:]+'\n'
-        matches = re.findall(pattern, words)
+        pattern = '\n'+word[:i]+'[a-z]'+word[i:]+'\n'
+        matches = re.findall(pattern, words, re.IGNORECASE)
         if len(matches) > 0:
             found_words.extend(matches)
 
