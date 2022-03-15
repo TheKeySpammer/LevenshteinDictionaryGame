@@ -63,7 +63,7 @@ def traverse_tree(node:TreeDSNode, target, all_used_words, max_depth):
     
 
 def main():
-    if len(sys.argv) != 3 or len(sys.argv) != 4:
+    if len(sys.argv) != 3 and len(sys.argv) != 4:
         print('Usage: ./main.py <word> <target> <max_depth>')
         sys.exit(1)
 
