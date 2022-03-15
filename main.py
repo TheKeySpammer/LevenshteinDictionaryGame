@@ -1,7 +1,5 @@
 import re
 import sys
-with open('./words.txt', 'r') as f:
-    words = f.read()
 
 class TreeDSNode:
     def __init__(self, word, used_words:list):
@@ -21,7 +19,7 @@ class TreeDSNode:
     def get_children(self):
         return self.children
 
-def get_similar_words(word):
+def get_similar_words(word, words):
     found_words = []
     # find word in words by removing one character at a time
     for i in range(len(word)):
@@ -41,7 +39,7 @@ def get_similar_words(word):
     found_words = [word.strip() for word in found_words]
     return found_words
 
-def traverse_tree(node:TreeDSNode, target, all_used_words, max_depth):
+def traverse_tree(node:TreeDSNode, target, all_used_words, max_depth, words):
     if node.word == target:
         print(node.used_words)
         print('\n')
@@ -53,13 +51,15 @@ def traverse_tree(node:TreeDSNode, target, all_used_words, max_depth):
     # get children
     children = node.get_children()
     if len(children) == 0:
-        similar_words = get_similar_words(node.word)
+        similar_words = get_similar_words(node.word, words)
         for word in similar_words:
+            # remove word from words
+            words = words.replace(word+'\n', '')
             if word not in all_used_words:
                 all_used_words.append(word)
                 child_node = TreeDSNode(word, node.get_used_words() + [word])
                 node.add_child(child_node)
-                traverse_tree(child_node, target, all_used_words, max_depth)
+                traverse_tree(child_node, target, all_used_words, max_depth, words)
     
 
 def main():
@@ -69,6 +69,9 @@ def main():
 
     max_depth = 20
 
+    with open('./words.txt', 'r') as f:
+        words = f.read()
+
     word = sys.argv[1]
     target = sys.argv[2]
     if len(sys.argv) == 4:
@@ -77,7 +80,7 @@ def main():
         max_depth = 20
     all_used_words = [word]
     parent_node = TreeDSNode(word, [word])
-    traverse_tree(parent_node, target, all_used_words, max_depth)
+    traverse_tree(parent_node, target, all_used_words, max_depth, words)
 
 if __name__ == '__main__':
     main()
