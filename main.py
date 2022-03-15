@@ -41,13 +41,13 @@ def get_similar_words(word):
     found_words = [word.strip() for word in found_words]
     return found_words
 
-def traverse_tree(node:TreeDSNode, target, all_used_words):
+def traverse_tree(node:TreeDSNode, target, all_used_words, max_depth):
     if node.word == target:
         print(node.used_words)
         print('\n')
         return
 
-    if len(node.get_used_words()) > 20:
+    if len(node.get_used_words()) > max_depth:
         return
     
     # get children
@@ -59,20 +59,25 @@ def traverse_tree(node:TreeDSNode, target, all_used_words):
                 all_used_words.append(word)
                 child_node = TreeDSNode(word, node.get_used_words() + [word])
                 node.add_child(child_node)
-                traverse_tree(child_node, target, all_used_words)
+                traverse_tree(child_node, target, all_used_words, max_depth)
     
 
 def main():
-    if len(sys.argv) != 3:
-        print('Usage: ./main.py <word> <target>')
+    if len(sys.argv) != 3 or len(sys.argv) != 4:
+        print('Usage: ./main.py <word> <target> <max_depth>')
         sys.exit(1)
+
+    max_depth = 20
 
     word = sys.argv[1]
     target = sys.argv[2]
-    similar_words = get_similar_words(word)
+    if len(sys.argv) == 4:
+        max_depth = int(sys.argv[3])
+    else:
+        max_depth = 20
     all_used_words = [word]
     parent_node = TreeDSNode(word, [word])
-    traverse_tree(parent_node, target, all_used_words)
+    traverse_tree(parent_node, target, all_used_words, max_depth)
 
 if __name__ == '__main__':
     main()

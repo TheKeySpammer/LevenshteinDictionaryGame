@@ -9,3 +9,6 @@ Rules of the game
 * The new word should be a valid dictionary word
 
 This program solves the above game.
+
+## Usage
+`python main.py <word> <target> <max_depth>`
