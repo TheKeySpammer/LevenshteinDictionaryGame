@@ -76,15 +76,25 @@ def main():
         sys.exit(1)
 
     max_depth = 20
-
     word = sys.argv[1]
     target = sys.argv[2]
+    # closes words
+    closes_words = get_similar_words(word)
+    print("Closes words:")
+    print(closes_words)
+    print()
+
     if len(sys.argv) == 4:
         max_depth = int(sys.argv[3])
     else:
         max_depth = 20
     parent_node = TreeDSNode(word, [word])
-    traverse_tree(parent_node, target, max_depth)
+    try:
+        traverse_tree(parent_node, target, max_depth)
+    except KeyboardInterrupt as e:
+        print('\n')
+        print('Exiting...')
+        sys.exit(0)
 
 if __name__ == '__main__':
     main()
